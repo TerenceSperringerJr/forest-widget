@@ -1,0 +1,114 @@
+<html>
+<head>
+	<script src='forest-widget.js'></script>
+	
+	<style>
+		body {
+			background-color: #f0f0f0;
+		}
+		
+		h1 {
+			text-align: center;
+		}
+		
+		p {
+			background-color: #ffffff;
+			border-radius: 5px;
+			padding: 3px;
+			margin: 0px;
+		}
+		
+		.extra-bottom-space {
+			margin-bottom: 10px;
+		}
+		
+		form {
+			display: inline-block;
+			background-color: #ffffff;
+			
+			border-width: 1px;
+			border-style: solid;
+			border-radius: 5px;
+		}
+		
+		div.widget-body {
+			border-radius: 5px;
+			padding: 2px;
+			display: inline-block;
+			background-color: #c0c0a0;
+		}
+		
+		form.forest-body div.node{
+			padding-left: 0px;
+		}
+		
+		div.node {
+			padding-right: 2px;
+		}
+		
+		div.node div.node {
+			padding-left: 15px;
+		}
+		
+		form.options-body {
+			vertical-align: top;
+			padding: 2px;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Forest Widget Example</h1>
+	
+	<div class="extra-bottom-space">
+		<p>
+			The div below contains the Forest Widget.
+		</p>
+		
+		<p>
+			The Forest Widget is initialized by passing the ID of the element to contain it.
+			In this case, "forest-widget-container" is passed to the forest-widget via FOREST_WIDGET_CREATOR.create('forest-widget-container').
+			This will return a FOREST_WIDGET object (for this example we keep a reference to the object within the variable, EXAMPLE_FOREST).
+		</p>
+		
+		<p>
+			EXAMPLE_FOREST.createNode("label") can be used to create a new node.
+			EXAMPLE_FOREST.addNode(node, parent) can be used to attach child nodes to parents. In the event a parent is omitted, the node becomes a root node with its parent set to null.
+		</p>
+	</div>
+	
+	<div id="forest-widget-container"></div>
+	<script>
+		//This code is invoked immediately AFTER the parent element has been created
+		var EXAMPLE_FOREST = FOREST_WIDGET_CREATOR.create('forest-widget-container'),
+			parent,
+			child,
+			grandchild,
+			i,
+			j,
+			k,
+			childrenCount,
+			grandchildrenCount;
+		
+		for(i = 0; i < 5; i++) {
+			parent = EXAMPLE_FOREST.createNode("node-" + i);
+			EXAMPLE_FOREST.addNode(parent);
+			
+			childrenCount = Math.floor(Math.random() * 5);
+			
+			for(j = 0; j < childrenCount; j++) {
+				child = EXAMPLE_FOREST.createNode("node-" + i + "-" + j);
+				EXAMPLE_FOREST.addNode(child, parent);
+				
+				grandchildrenCount = Math.floor(Math.random() * 3);
+				
+				for(k = 0; k < grandchildrenCount; k++) {
+					grandchild = EXAMPLE_FOREST.createNode("node-" + i + "-" + j + "-" + k);
+					EXAMPLE_FOREST.addNode(grandchild, child);
+				}
+			}
+		}
+		
+	</script>
+</body>
+</html>
