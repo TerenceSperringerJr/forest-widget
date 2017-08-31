@@ -92,22 +92,25 @@
 		
 		for(i = 0; i < 5; i++) {
 			parent = EXAMPLE_FOREST.createNode("node-" + i);
-			EXAMPLE_FOREST.addNode(parent);
+			EXAMPLE_FOREST.addNodeByReference(parent);
 			
 			childrenCount = Math.floor(Math.random() * 5);
 			
 			for(j = 0; j < childrenCount; j++) {
 				child = EXAMPLE_FOREST.createNode("node-" + i + "-" + j);
-				EXAMPLE_FOREST.addNode(child, parent);
+				EXAMPLE_FOREST.addNodeByReference(child, parent);
 				
 				grandchildrenCount = Math.floor(Math.random() * 3);
 				
 				for(k = 0; k < grandchildrenCount; k++) {
 					grandchild = EXAMPLE_FOREST.createNode("node-" + i + "-" + j + "-" + k);
-					EXAMPLE_FOREST.addNode(grandchild, child);
+					EXAMPLE_FOREST.addNodeByReference(grandchild, child);
 				}
 			}
 		}
+		
+		var earth = EXAMPLE_FOREST.addNode({id: 1, label: 'Earth', parent: null});
+		EXAMPLE_FOREST.addNode({id: 12344556, label: 'Americas', parent: earth});
 		
 	</script>
 </body>
