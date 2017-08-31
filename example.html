@@ -73,10 +73,14 @@
 		
 		<p>
 			EXAMPLE_FOREST.createNode("label") can be used to create a new node.
+		</p>
+		
+		<p>
 			EXAMPLE_FOREST.addNode(node, parent) can be used to attach child nodes to parents. In the event a parent is omitted, the node becomes a root node with its parent set to null.
 		</p>
+		
 		<p>
-			EXAMPLE_FOREST.getUserSelectedNodes() will return a list of nodes that the user has physically selected.
+			EXAMPLE_FOREST.getUserSelectedNodes() will return a list of nodes that the user has manually selected.
 		</p>
 	</div>
 	
@@ -114,7 +118,6 @@
 		
 		var earth = EXAMPLE_FOREST.addNode({id: 1, label: 'Earth', parent: null});
 		EXAMPLE_FOREST.addNode({id: 12344556, label: 'Americas', parent: earth});
-		
 	</script>
 </body>
 </html>
