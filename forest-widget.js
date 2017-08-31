@@ -215,7 +215,7 @@ var FOREST_WIDGET_CREATOR =
 			thisForestWidget.addNode = function(input) {
 				var node = thisForestWidget.createNode(input);
 				
-				if(!node.parent) {
+				if(!node.data.parent) {
 					forest.push(node);
 					forestBody.appendChild(node.element);
 				}
