@@ -19,16 +19,55 @@ var FOREST_WIDGET_CREATOR =
 		return new ForestWidget(parentElementID);
 	}
 	
+	function toggleAncestors(parentNode, truth) {
+		if(parentNode) {
+			if(!parentNode.data.userSelected) {
+				parentNode.input.checked = truth;
+			}
+			
+			if(parentNode.data.parent) {
+				return toggleAncestors(parentNode.data.parent, truth);
+			}
+		}
+		
+		return;
+	}
+	
+	function toggleDescendants(node, truth) {
+		var i,
+			queue = [],
+			currentNode;
+		
+		queue.push(node);
+		
+		while(queue.length > 0) {
+			currentNode = queue.shift();
+			
+			if(!currentNode.data.userSelected) {
+				currentNode.input.checked = truth;
+			}
+			
+			for(i = 0; i < currentNode.data.children.length; i++) {
+				queue.push(currentNode.data.children[i]);
+			}
+		}
+		
+		return;
+	}
+	
+	
 	function Node(label, id, parent, dataInstance) {
 		var thisNode = this,
-			input,
 			span,
 			i;
+		
+		this.input;
 		
 		this.data = {
 			id: -1,
 			label: label,
 			parent: null,
+			children: [],
 			userSelected: false,
 			includeAncestors: false,
 			includeDescendants: false
@@ -42,18 +81,24 @@ var FOREST_WIDGET_CREATOR =
 			this.data.parent = parent;
 		}
 		
-		this.children = [];
-		
 		this.element = document.createElement("div");
 		this.element.className = "node";
 		
-		input = document.createElement("input");
-		input.id = "node-" + this.data.id;
-		input.type = "checkbox";
-		input.onchange = function() {
+		this.input = document.createElement("input");
+		this.input.id = "node-" + this.data.id;
+		this.input.type = "checkbox";
+		this.input.onchange = function() {
 			thisNode.data.userSelected = this.checked;
 			thisNode.data.includeAncestors = dataInstance.includeAncestors;
 			thisNode.data.includeDescendants = dataInstance.includeDescendants;
+			
+			if(thisNode.data.includeAncestors) {
+				toggleAncestors(thisNode.data.parent, thisNode.data.userSelected);
+			}
+			
+			if(thisNode.data.includeDescendants) {
+				toggleDescendants(thisNode, thisNode.data.userSelected);
+			}
 			
 			if(thisNode.data.userSelected) {
 				for(i = 0; i < dataInstance.userSelectedNodes.length; i++) {
@@ -82,7 +127,7 @@ var FOREST_WIDGET_CREATOR =
 		span = document.createElement("span");
 		span.innerHTML = this.data.label;
 		
-		this.element.appendChild(input);
+		this.element.appendChild(this.input);
 		this.element.appendChild(span);
 		
 		return;
@@ -159,7 +204,8 @@ var FOREST_WIDGET_CREATOR =
 					forestBody.appendChild(node.element);
 				}
 				else {
-					parent.children.push(node);
+					node.data.parent = parent;
+					parent.data.children.push(node);
 					parent.element.appendChild(node.element);
 				}
 				
@@ -174,8 +220,8 @@ var FOREST_WIDGET_CREATOR =
 					forestBody.appendChild(node.element);
 				}
 				else {
-					node.parent.children.push(node);
-					node.parent.element.appendChild(node.element);
+					node.data.parent.data.children.push(node);
+					node.data.parent.element.appendChild(node.element);
 				}
 				
 				return node;
