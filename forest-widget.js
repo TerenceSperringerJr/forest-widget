@@ -19,22 +19,27 @@ var FOREST_WIDGET_CREATOR =
 		return new ForestWidget(parentElementID);
 	}
 	
-	function Node(label, id, parent, userSelectedNodes) {
+	function Node(label, id, parent, dataInstance) {
 		var thisNode = this,
 			input,
-			span;
+			span,
+			i;
 		
-		this.label = label;
-		this.id = -1;
-		this.parent = null;
-		this.userSelected = false;
+		this.data = {
+			id: -1,
+			label: label,
+			parent: null,
+			userSelected: false,
+			includeAncestors: false,
+			includeDescendants: false
+		};
 		
 		if(id) {
-			this.id = id;
+			this.data.id = id;
 		}
 		
 		if(parent) {
-			this.parent = parent;
+			this.data.parent = parent;
 		}
 		
 		this.children = [];
@@ -43,23 +48,39 @@ var FOREST_WIDGET_CREATOR =
 		this.element.className = "node";
 		
 		input = document.createElement("input");
-		input.id = "node-" + this.id;
+		input.id = "node-" + this.data.id;
 		input.type = "checkbox";
 		input.onchange = function() {
-			thisNode.userSelected = this.checked;
+			thisNode.data.userSelected = this.checked;
+			thisNode.data.includeAncestors = dataInstance.includeAncestors;
+			thisNode.data.includeDescendants = dataInstance.includeDescendants;
 			
-			if(thisNode.userSelected) {
-				//add to userSelected[]
+			if(thisNode.data.userSelected) {
+				for(i = 0; i < dataInstance.userSelectedNodes.length; i++) {
+					if(dataInstance.userSelectedNodes[i] === thisNode.data) {
+						return;
+					}
+				}
+				
+				dataInstance.userSelectedNodes.push(thisNode.data);
 			}
 			else {
-				//remove from userSelected[]
+				thisNode.data.includeAncestors = dataInstance.includeAncestors;
+				thisNode.data.includeDescendants = dataInstance.includeDescendants;
+				
+				for(i = 0; i < dataInstance.userSelectedNodes.length; i++) {
+					if(dataInstance.userSelectedNodes[i] === thisNode.data) {
+						dataInstance.userSelectedNodes.splice(i, 1);
+						break;
+					}
+				}
 			}
 			
 			return;
 		}
 		
 		span = document.createElement("span");
-		span.innerHTML = this.label;
+		span.innerHTML = this.data.label;
 		
 		this.element.appendChild(input);
 		this.element.appendChild(span);
@@ -76,9 +97,11 @@ var FOREST_WIDGET_CREATOR =
 				forestBody = document.createElement("form"),
 				optionsBody = document.createElement("form"),
 				forest = [],
-				userSelectedNodes = [],
-				includeAncestors = false,
-				includeDescendants = false;
+				dataInstance = {
+					userSelectedNodes: [],
+					includeAncestors: false,
+					includeDescendants: false
+				};
 			
 			widgetBody.className = "widget-body";
 			forestBody.className = "tree-body";
@@ -94,14 +117,14 @@ var FOREST_WIDGET_CREATOR =
 				
 				if(value === "ancestors") {
 					input.onchange = function() {
-						includeAncestors = input.checked;
+						dataInstance.includeAncestors = input.checked;
 						
 						return;
 					};
 				}
 				else {
 					input.onchange = function() {
-						includeDescendants = input.checked;
+						dataInstance.includeDescendants = input.checked;
 						
 						return;
 					};
@@ -124,10 +147,10 @@ var FOREST_WIDGET_CREATOR =
 			
 			thisForestWidget.createNode = function(node) {
 				if(node.id) {
-					return new Node(node.label, node.id, node.parent, userSelectedNodes);
+					return new Node(node.label, node.id, node.parent, dataInstance);
 				}
 				
-				return new Node(node, null, null, userSelectedNodes);
+				return new Node(node, null, null, dataInstance);
 			}
 			
 			thisForestWidget.addNodeByReference = function(node, parent) {
@@ -159,11 +182,11 @@ var FOREST_WIDGET_CREATOR =
 			}
 			
 			thisForestWidget.getModes = function() {
-				return {"includeAncestors": includeAncestors, "includeDescendants": includeDescendants};
+				return {"includeAncestors": dataInstance.includeAncestors, "includeDescendants": dataInstance.includeDescendants};
 			}
 			
-			thisForestWidget.getUserSelected = function() {
-				//
+			thisForestWidget.getUserSelectedNodes = function() {
+				return dataInstance.userSelectedNodes;
 			}
 			
 			return;
