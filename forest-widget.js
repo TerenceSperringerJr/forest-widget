@@ -33,6 +33,29 @@ var FOREST_WIDGET_CREATOR =
 		return;
 	}
 	
+	function toggleDescendants(node, truth) {
+		var i,
+			queue = [],
+			currentNode;
+		
+		queue.push(node);
+		
+		while(queue.length > 0) {
+			currentNode = queue.shift();
+			
+			if(!currentNode.data.userSelected) {
+				currentNode.input.checked = truth;
+			}
+			
+			for(i = 0; i < currentNode.data.children.length; i++) {
+				queue.push(currentNode.data.children[i]);
+			}
+		}
+		
+		return;
+	}
+	
+	
 	function Node(label, id, parent, dataInstance) {
 		var thisNode = this,
 			span,
@@ -71,6 +94,10 @@ var FOREST_WIDGET_CREATOR =
 			
 			if(thisNode.data.includeAncestors) {
 				toggleAncestors(thisNode.data.parent, thisNode.data.userSelected);
+			}
+			
+			if(thisNode.data.includeDescendants) {
+				toggleDescendants(thisNode, thisNode.data.userSelected);
 			}
 			
 			if(thisNode.data.userSelected) {
