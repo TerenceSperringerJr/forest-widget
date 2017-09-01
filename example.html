@@ -23,12 +23,12 @@
 		}
 		
 		form {
-			display: inline-block;
 			background-color: #ffffff;
 			
 			border-width: 1px;
 			border-style: solid;
 			border-radius: 5px;
+			margin-bottom: 2px;
 		}
 		
 		div.widget-body {
@@ -53,6 +53,7 @@
 		form.options-body {
 			vertical-align: top;
 			padding: 2px;
+			margin-bottom: 5px;
 		}
 	</style>
 </head>
@@ -116,8 +117,10 @@
 			}
 		}
 		
-		var earth = EXAMPLE_FOREST.addNode({id: 1, label: 'Earth', parent: null});
-		EXAMPLE_FOREST.addNode({id: 12344556, label: 'Americas', parent: earth});
+		var earth = EXAMPLE_FOREST.addNode({id: 1, label: 'Earth', parent: null}),
+			americas = EXAMPLE_FOREST.addNode({id: 12344556, label: 'Americas', parent: earth}),
+			northAmerica = EXAMPLE_FOREST.addNode({id: 90210, label: 'North America', parent: americas}),
+			unitedStates = EXAMPLE_FOREST.addNode({id: 90210, label: 'United States of America', parent: northAmerica});
 	</script>
 </body>
 </html>

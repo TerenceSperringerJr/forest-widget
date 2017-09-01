@@ -186,8 +186,8 @@ var FOREST_WIDGET_CREATOR =
 			optionsBody.appendChild(createCheckbox("ancestors", "Include ancestors"));
 			optionsBody.appendChild(createCheckbox("descendants", "Include descendants"));
 			
-			widgetBody.appendChild(forestBody);
 			widgetBody.appendChild(optionsBody);
+			widgetBody.appendChild(forestBody);
 			parentElement.appendChild(widgetBody);
 			
 			thisForestWidget.createNode = function(node) {
