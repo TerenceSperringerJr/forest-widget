@@ -31,11 +31,17 @@
 			margin-bottom: 2px;
 		}
 		
+		/* Forest Widget Classes */
 		div.widget-body {
 			border-radius: 5px;
 			padding: 2px;
 			display: inline-block;
 			background-color: #c0c0a0;
+			vertical-align: top;
+		}
+		
+		form.tree-body {
+			padding: 2px;
 		}
 		
 		form.forest-body div.node{
@@ -51,7 +57,6 @@
 		}
 		
 		form.options-body {
-			vertical-align: top;
 			padding: 2px;
 			margin-bottom: 5px;
 		}
@@ -63,13 +68,17 @@
 	
 	<div class="extra-bottom-space">
 		<p>
-			The div below contains the Forest Widget.
+			The div below contains two instances of the Forest Widget.
 		</p>
 		
 		<p>
-			The Forest Widget is initialized by passing the ID of the element to contain it.
-			In this case, "forest-widget-container" is passed to the forest-widget via FOREST_WIDGET_CREATOR.create('forest-widget-container').
-			This will return a FOREST_WIDGET object (for this example we keep a reference to the object within the variable, EXAMPLE_FOREST).
+			The Forest Widget is instantiated by passing FOREST_WIDGET_CREATOR.create() the ID of the element to contain it.
+			In this case, "forest-widget-container1" is passed to the forest-widget via FOREST_WIDGET_CREATOR.create('forest-widget-container1'),
+			and "forest-widget-container2" is passed via FOREST_WIDGET_CREATOR.create('forest-widget-container2', "150px", "300px").
+		</p>
+		
+		<p>
+			FOREST_WIDGET_CREATOR.create will return a FOREST_WIDGET object (in this example references are kept for EXAMPLE_FOREST &amp; EXAMPLE_FOREST2).
 		</p>
 		
 		<p>
@@ -85,10 +94,13 @@
 		</p>
 	</div>
 	
-	<div id="forest-widget-container"></div>
+	<div id="forest-widget-container1" style="display: inline-block;"></div>
+	<div id="forest-widget-container2" style="display: inline-block;"></div>
+	
 	<script>
 		//This code is invoked immediately AFTER the parent element has been created
-		var EXAMPLE_FOREST = FOREST_WIDGET_CREATOR.create('forest-widget-container'),
+		var EXAMPLE_FOREST = FOREST_WIDGET_CREATOR.create('forest-widget-container1'),
+			EXAMPLE_FOREST2 = FOREST_WIDGET_CREATOR.create('forest-widget-container2', "150px", "300px"),
 			parent,
 			child,
 			grandchild,
@@ -117,10 +129,16 @@
 			}
 		}
 		
-		var earth = EXAMPLE_FOREST.addNode({id: 1, label: 'Earth', parent: null}),
-			americas = EXAMPLE_FOREST.addNode({id: 12344556, label: 'Americas', parent: earth}),
-			northAmerica = EXAMPLE_FOREST.addNode({id: 90210, label: 'North America', parent: americas}),
-			unitedStates = EXAMPLE_FOREST.addNode({id: 90210, label: 'United States of America', parent: northAmerica});
+		var earth = EXAMPLE_FOREST2.addNode({id: 1, label: 'Earth', parent: null}),
+			americas = EXAMPLE_FOREST2.addNode({id: 12344556, label: 'Americas', parent: earth}),
+			northAmerica = EXAMPLE_FOREST2.addNode({id: 90210, label: 'North America', parent: americas}),
+			southAmerica = EXAMPLE_FOREST2.addNode({id: 01209, label: 'South America', parent: americas}),
+			unitedStates = EXAMPLE_FOREST2.addNode({id: 90210, label: 'United States of America', parent: northAmerica}),
+			canada = EXAMPLE_FOREST2.addNode({id: 411, label: 'Canada', parent: northAmerica}),
+			mexico = EXAMPLE_FOREST2.addNode({id: 667, label: 'Mexico', parent: northAmerica}),
+			pennsylvania = unitedStates = EXAMPLE_FOREST2.addNode({id: 15213, label: 'Pennsylvania', parent: unitedStates}),
+			brazil = EXAMPLE_FOREST2.addNode({id: 7777, label: 'Brazil', parent: southAmerica});
+		
 	</script>
 </body>
 </html>
