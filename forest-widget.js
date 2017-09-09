@@ -64,6 +64,7 @@ var FOREST_WIDGET_CREATOR =
 			i;
 		
 		this.input;
+		this.depth = 0;
 		
 		this.data = {
 			id: -1,
@@ -85,7 +86,8 @@ var FOREST_WIDGET_CREATOR =
 		
 		if(parent) {
 			this.data.parent = parent;
-			this.element.style.marginLeft = "15px";
+			this.depth = parent.depth + 15;
+			this.element.style.textIndent = this.depth + "px";
 		}
 		
 		this.input = document.createElement("input");
@@ -166,12 +168,19 @@ var FOREST_WIDGET_CREATOR =
 				dataInstance = {
 					userSelectedNodes: [],
 					includeAncestors: false,
-					includeDescendants: false
+					includeDescendants: false,
+					width: width ? width: "auto",
+					height: height ? height: "auto",
+					widgetBody: widgetBody,
+					optionsBody: optionsBody,
+					forestBody: forestBody
 				};
 			
 			widgetBody.className = "widget-body";
-			forestBody.className = "tree-body";
+			forestBody.className = "forest-body";
 			optionsBody.className = "options-body";
+			
+			widgetBody.style.width = "auto";
 			
 			if(width) {
 				widgetBody.style.width = width;
@@ -181,10 +190,12 @@ var FOREST_WIDGET_CREATOR =
 				widgetBody.style.height = height;
 			}
 			
+			widgetBody.style.boxSizing = "border-box";
 			widgetBody.style.overflowX = "auto";
 			widgetBody.style.overflowY = "auto";
-			optionsBody.style.width = "100%";
-			forestBody.style.width = "100%";
+			
+			optionsBody.style.boxSizing = "border-box";
+			forestBody.style.boxSizing = "border-box";
 			
 			function createCheckbox(value, label) {
 				var div = document.createElement("div"),
@@ -232,17 +243,37 @@ var FOREST_WIDGET_CREATOR =
 				return new Node(node, null, null, dataInstance);
 			}
 			
+			function refresh() {
+				var widgetBodyWidth = widgetBody.style.width,
+					forestBodyDisplay = forestBody.style.display;
+				
+				widgetBody.style.width = "auto";//document.getElementsByTagName("body")[0].clientWidth + "px";
+				//forestBody.style.display = "inline-block";
+				
+				forestBody.style.width = forestBody.offsetWidth + 1 + "px";
+				optionsBody.style.width = forestBody.style.width;
+				
+				widgetBody.style.width = widgetBodyWidth;
+				forestBody.style.display = forestBodyDisplay;
+				
+				return;
+			}
+			
 			thisForestWidget.addNodeByReference = function(node, parent) {
+				forestBody.appendChild(node.element);
+				
 				if(!parent) {
 					forest.push(node);
-					forestBody.appendChild(node.element);
 				}
 				else {
 					node.data.parent = parent;
-					node.element.style.marginLeft = "15px";
+					node.depth = parent.depth + 15;
+					node.element.style.textIndent = node.depth + "px";
 					parent.data.children.push(node);
 					parent.element.appendChild(node.element);
 				}
+				
+				refresh();
 				
 				return;
 			}
@@ -250,14 +281,17 @@ var FOREST_WIDGET_CREATOR =
 			thisForestWidget.addNode = function(input) {
 				var node = thisForestWidget.createNode(input);
 				
+				forestBody.appendChild(node.element);
+				
 				if(!node.data.parent) {
 					forest.push(node);
-					forestBody.appendChild(node.element);
 				}
 				else {
 					node.data.parent.data.children.push(node);
 					node.data.parent.element.appendChild(node.element);
 				}
+				
+				refresh();
 				
 				return node;
 			}
