@@ -233,14 +233,9 @@ var FOREST_WIDGET_CREATOR =
 			parentElement.appendChild(widgetBody);
 			
 			function resize() {
-				if(dataInstance.width != "auto") {
-					//TODO: get proper width
-					forestBody.style.width = (document.getElementsByTagName("body")[0].clientWidth * 0.34) + "px";
-				}
-				
-				if(dataInstance.height != "auto") {
-					forestContainer.style.height = (widgetBody.clientHeight - (optionsBody.offsetHeight + 8)) + "px";
-				}
+				//TODO: get proper width
+				forestBody.style.width = (document.getElementsByTagName("body")[0].clientWidth * 0.34) + "px";
+				forestContainer.style.height = (widgetBody.clientHeight - (optionsBody.offsetHeight + 8)) + "px";
 				
 				return;
 			}
