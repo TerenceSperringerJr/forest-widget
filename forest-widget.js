@@ -169,8 +169,8 @@ var FOREST_WIDGET_CREATOR =
 					userSelectedNodes: [],
 					includeAncestors: false,
 					includeDescendants: false,
-					width: width ? width: "auto",
-					height: height ? height: "auto",
+					width: width ? width: "100%",
+					height: height ? height: "100%",
 					widgetBody: widgetBody,
 					optionsBody: optionsBody,
 					forestContainer: forestContainer
@@ -181,16 +181,8 @@ var FOREST_WIDGET_CREATOR =
 			forestBody.className = "forest-body";
 			optionsBody.className = "options-body";
 			
-			widgetBody.style.width = "auto";
-			
-			if(width) {
-				widgetBody.style.width = width;
-			}
-			
-			if(height) {
-				widgetBody.style.height = height;
-			}
-			
+			widgetBody.style.width = dataInstance.width;
+			widgetBody.style.height = dataInstance.height;
 			widgetBody.style.boxSizing = "border-box";
 			
 			optionsBody.style.width = "100%";
