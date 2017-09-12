@@ -57,7 +57,6 @@ var FOREST_WIDGET_CREATOR =
 		return;
 	}
 	
-	
 	function Node(label, id, parent, dataInstance) {
 		var thisNode = this,
 			span,
@@ -108,7 +107,7 @@ var FOREST_WIDGET_CREATOR =
 			}
 			
 			if(thisNode.data.userSelected) {
-				thisNode.graphicBox.innerHTML = "&#9949;";
+				thisNode.graphicBox.innerHTML = "&#10004;";
 				thisNode.graphicBox.style.fontWeight = "900";
 				
 				for(i = 0; i < dataInstance.userSelectedNodes.length; i++) {
@@ -207,6 +206,8 @@ var FOREST_WIDGET_CREATOR =
 				
 				input.type = "checkbox";
 				input.value = value;
+				input.style.boxSizing = "border-box";
+				input.style.margin = "3px 3px 3px 4px";
 				
 				if(value === "ancestors") {
 					input.onchange = function() {
@@ -242,7 +243,7 @@ var FOREST_WIDGET_CREATOR =
 			function resize() {
 				if(dataInstance.width != "auto") {
 					//TODO: get proper width
-					forestBody.style.width = (document.getElementsByTagName("body")[0].clientWidth >> 2) + "px";
+					forestBody.style.width = (document.getElementsByTagName("body")[0].clientWidth * 0.34) + "px";
 				}
 				
 				if(dataInstance.height != "auto") {
