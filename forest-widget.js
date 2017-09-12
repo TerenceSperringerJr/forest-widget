@@ -162,7 +162,8 @@ var FOREST_WIDGET_CREATOR =
 		(function() {
 			var parentElement = document.getElementById(parentElementID),
 				widgetBody = document.createElement("div"),
-				forestBody = document.createElement("form"),
+				forestContainer = document.createElement("form"),
+				forestBody = document.createElement("div"),
 				optionsBody = document.createElement("form"),
 				forest = [],
 				dataInstance = {
@@ -173,10 +174,11 @@ var FOREST_WIDGET_CREATOR =
 					height: height ? height: "auto",
 					widgetBody: widgetBody,
 					optionsBody: optionsBody,
-					forestBody: forestBody
+					forestContainer: forestContainer
 				};
 			
 			widgetBody.className = "widget-body";
+			forestContainer.className = "forest-container";
 			forestBody.className = "forest-body";
 			optionsBody.className = "options-body";
 			
@@ -191,11 +193,12 @@ var FOREST_WIDGET_CREATOR =
 			}
 			
 			widgetBody.style.boxSizing = "border-box";
-			widgetBody.style.overflowX = "auto";
-			widgetBody.style.overflowY = "auto";
 			
-			optionsBody.style.boxSizing = "border-box";
-			forestBody.style.boxSizing = "border-box";
+			optionsBody.style.width = "100%";
+			
+			forestContainer.style.width = "100%";
+			forestContainer.style.overflowX = "auto";
+			forestContainer.style.overflowY = "auto";
 			
 			function createCheckbox(value, label) {
 				var div = document.createElement("div"),
@@ -232,8 +235,22 @@ var FOREST_WIDGET_CREATOR =
 			optionsBody.appendChild(createCheckbox("descendants", "Include descendants"));
 			
 			widgetBody.appendChild(optionsBody);
-			widgetBody.appendChild(forestBody);
+			forestContainer.appendChild(forestBody);
+			widgetBody.appendChild(forestContainer);
 			parentElement.appendChild(widgetBody);
+			
+			function resize() {
+				if(dataInstance.width != "auto") {
+					//TODO: get proper width
+					forestBody.style.width = (document.getElementsByTagName("body")[0].clientWidth >> 2) + "px";
+				}
+				
+				if(dataInstance.height != "auto") {
+					forestContainer.style.height = (widgetBody.clientHeight - (optionsBody.offsetHeight + 8)) + "px";
+				}
+				
+				return;
+			}
 			
 			thisForestWidget.createNode = function(node) {
 				if(node.id) {
@@ -241,22 +258,6 @@ var FOREST_WIDGET_CREATOR =
 				}
 				
 				return new Node(node, null, null, dataInstance);
-			}
-			
-			function refresh() {
-				var widgetBodyWidth = widgetBody.style.width,
-					forestBodyDisplay = forestBody.style.display;
-				
-				widgetBody.style.width = "auto";//document.getElementsByTagName("body")[0].clientWidth + "px";
-				//forestBody.style.display = "inline-block";
-				
-				forestBody.style.width = forestBody.offsetWidth + 1 + "px";
-				optionsBody.style.width = forestBody.style.width;
-				
-				widgetBody.style.width = widgetBodyWidth;
-				forestBody.style.display = forestBodyDisplay;
-				
-				return;
 			}
 			
 			thisForestWidget.addNodeByReference = function(node, parent) {
@@ -273,7 +274,7 @@ var FOREST_WIDGET_CREATOR =
 					parent.element.appendChild(node.element);
 				}
 				
-				refresh();
+				resize();
 				
 				return;
 			}
@@ -291,7 +292,7 @@ var FOREST_WIDGET_CREATOR =
 					node.data.parent.element.appendChild(node.element);
 				}
 				
-				refresh();
+				resize();
 				
 				return node;
 			}

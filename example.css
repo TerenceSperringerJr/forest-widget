@@ -39,14 +39,14 @@ div.widget-body {
 	vertical-align: top;
 }
 
-form.forest-body {
+form.forest-container {
 	/**/
 }
 
-form.forest-body div.node{
+div.forest-body div.node{
 	padding-left: 0px;
 }
 
 form.options-body {
-	margin-bottom: 5px;
+	/* margin-bottom: 5px; */
 }
