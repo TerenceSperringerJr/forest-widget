@@ -240,6 +240,8 @@ var FOREST_WIDGET_CREATOR =
 				return;
 			}
 			
+			window.addEventListener("resize", resize);
+			
 			thisForestWidget.createNode = function(node) {
 				if(node.id) {
 					return new Node(node.label, node.id, node.parent, dataInstance);
