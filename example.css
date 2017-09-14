@@ -23,20 +23,12 @@ p {
 
 form {
 	background-color: #ffffff;
-	
-	border-width: 1px;
-	border-style: solid;
-	border-radius: 5px;
-	margin-bottom: 2px;
 }
 
-/* Forest Widget Classes */
+/* Forest Widget Overrides */
 div.widget-body {
-	border-radius: 5px;
-	padding: 2px;
-	display: inline-block;
-	background-color: #a0a0c0;
-	vertical-align: top;
+	/*background-color: #a0a0c0;*/
+	background-color: #337ab7;
 }
 
 form.forest-container {
@@ -48,5 +40,5 @@ div.forest-body div.node{
 }
 
 form.options-body {
-	/* margin-bottom: 5px; */
+	/**/
 }
