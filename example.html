@@ -6,6 +6,7 @@
 	<script src='forest-widget.js'></script>
 	
 	<link rel="stylesheet" type="text/css" href="example.css">
+	<script src='example-locations.js'></script>
 	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -159,17 +160,7 @@
 		generateForest(CONTROL_EXAMPLE);
 		generateForest(TYPE_EXAMPLE);
 		
-		var earth = LOCATION_EXAMPLE.addNode({id: 1, label: 'Earth', parent: null}),
-			americas = LOCATION_EXAMPLE.addNode({id: 12344556, label: 'Americas', parent: earth}),
-			northAmerica = LOCATION_EXAMPLE.addNode({id: 90210, label: 'North America', parent: americas}),
-			southAmerica = LOCATION_EXAMPLE.addNode({id: 01209, label: 'South America', parent: americas}),
-			unitedStates = LOCATION_EXAMPLE.addNode({id: 1216, label: 'United States of America', parent: northAmerica}),
-			canada = LOCATION_EXAMPLE.addNode({id: 411, label: 'Canada', parent: northAmerica}),
-			mexico = LOCATION_EXAMPLE.addNode({id: 667, label: 'Mexico', parent: northAmerica}),
-			pennsylvania = LOCATION_EXAMPLE.addNode({id: 1213, label: 'Pennsylvania', parent: unitedStates}),
-			pittsburgh = LOCATION_EXAMPLE.addNode({id: 15213, label: 'Pittsburgh', parent: pennsylvania}),
-			brazil = LOCATION_EXAMPLE.addNode({id: 7777, label: 'Brazil', parent: southAmerica});
-		
+		generateLocationForest(LOCATION_EXAMPLE);
 	</script>
 </body>
 </html>
