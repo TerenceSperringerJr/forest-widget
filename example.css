@@ -15,6 +15,7 @@ p {
 	border-radius: 5px;
 	padding: 3px;
 	margin: 0px;
+	line-height: 1.0;
 }
 
 .extra-bottom-space {
@@ -27,7 +28,6 @@ form {
 
 /* Forest Widget Overrides */
 div.widget-body {
-	/*background-color: #a0a0c0;*/
 	background-color: #337ab7;
 }
 
