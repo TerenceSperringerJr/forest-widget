@@ -214,22 +214,11 @@ var FOREST_WIDGET_CREATOR =
 			widgetBody.appendChild(forestContainer);
 			parentElement.appendChild(widgetBody);
 			
-			function resize(node) {
-				var body = document.getElementsByTagName("body")[0],
-					parentElement,
-					neoWidth;
+			function resize() {
+				var diff = (widgetBody.offsetHeight - widgetBody.clientHeight) << 1,
+					neoSize = widgetBody.clientHeight - (optionsBody.offsetHeight + diff);
 				
-				if(node.type === Node) {
-					parentElement = (node.data.parent !== null) ? node.data.parent.element: forestBody;
-					
-					body.appendChild(node.element);
-					neoWidth = node.element.offsetWidth;
-					parentElement.appendChild(node.element);
-					
-					forestBody.style.width = neoWidth + "px";
-				}
-				
-				forestContainer.style.height = (widgetBody.clientHeight - (optionsBody.offsetHeight + 8)) + "px";
+				forestContainer.style.height = neoSize + "px";
 				
 				return;
 			}
@@ -258,7 +247,7 @@ var FOREST_WIDGET_CREATOR =
 					parent.element.appendChild(node.element);
 				}
 				
-				resize(node);
+				resize();
 				
 				return;
 			}
@@ -276,7 +265,7 @@ var FOREST_WIDGET_CREATOR =
 					node.data.parent.element.appendChild(node.element);
 				}
 				
-				resize(node);
+				resize();
 				
 				return node;
 			}

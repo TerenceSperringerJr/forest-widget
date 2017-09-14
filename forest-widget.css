@@ -18,6 +18,8 @@ div.widget-body form.options-body {
 	border-width: 1px;
 	margin-bottom: 2px;
 	width: 100%;
+	white-space: nowrap;
+	overflow: auto;
 }
 
 div.widget-body form.options-body input[type=checkbox],
@@ -33,10 +35,16 @@ div.widget-body form.forest-container {
 	border-width: 1px;
 	width: 100%;
 	overflow: auto;
+	box-sizing: border-box;
 }
 
 div.widget-body form.forest-container div.forest-body div.node {
 	width: 100%;
+	white-space: nowrap;
+}
+
+div.widget-body form.forest-container div.forest-body {
+	/**/
 }
 
 .light-font {
