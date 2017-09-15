@@ -2,7 +2,10 @@
 Javascript-based HTML widget that provides interface for displaying and selecting nodes of forests
 
 ## Instructions ##
-1. Include forest-widget.js and forest-widget.css
+1. A. Include forest-widget.js and forest-widget.css
+   -or-
+   B. Include forest-widget_b.js and forest-widget.css
+
 2. Use FOREST_WIDGET_CREATOR.create() to instantiate a new Forest Widget
 3. A. Use the new Forest Widget object to call addNode({id, label, parent})
    
@@ -18,3 +21,6 @@ Javascript-based HTML widget that provides interface for displaying and selectin
 A live example can be viewed via the following GitHub Page:
 
 https://terencesperringerjr.github.io/forest-widget/example.html
+
+The B example can be viewed here:
+https://terencesperringerjr.github.io/forest-widget/example_b.html
