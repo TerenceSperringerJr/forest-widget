@@ -7,7 +7,10 @@
 var FOREST_WIDGET_CREATOR =
 (function() {
 	var checkedBox = "included",
-		boldCheck = "selected";
+		boldCheck = "selected",
+		straightPipe = "&#9482;",
+		LPipe = "&#9494;",
+		forkPipe = "&#9507;";
 	
 	function ForestWidgetCreator() {
 		return;
@@ -24,15 +27,13 @@ var FOREST_WIDGET_CREATOR =
 	
 	function toggleAncestors(parentNode, truth) {
 		if(parentNode) {
-			if(!parentNode.data.userSelected) {
-				parentNode.ancestorsInput.checked = truth;
-				
-				if(truth) {
-					parentNode.rowDiv.classList.add(checkedBox);
-				}
-				else {
-					parentNode.rowDiv.classList.remove(checkedBox);
-				}
+			parentNode.ancestorsInput.checked = truth;
+			
+			if(truth) {
+				parentNode.rowDiv.classList.add(checkedBox);
+			}
+			else if(!parentNode.descendantsInput.checked) {
+				parentNode.rowDiv.classList.remove(checkedBox);
 			}
 			
 			if(parentNode.data.parent) {
@@ -52,16 +53,13 @@ var FOREST_WIDGET_CREATOR =
 		
 		while(queue.length > 0) {
 			currentNode = queue.shift();
+			currentNode.descendantsInput.checked = truth;
 			
-			if(!currentNode.data.userSelected) {
-				currentNode.descendantsInput.checked = truth;
-				
-				if(truth) {
-					currentNode.rowDiv.classList.add(checkedBox);
-				}
-				else {
-					currentNode.rowDiv.classList.remove(checkedBox);
-				}
+			if(truth) {
+				currentNode.rowDiv.classList.add(checkedBox);
+			}
+			else  if(!currentNode.ancestorsInput.checked) {
+				currentNode.rowDiv.classList.remove(checkedBox);
 			}
 			
 			for(i = 0; i < currentNode.data.children.length; i++) {
@@ -124,7 +122,6 @@ var FOREST_WIDGET_CREATOR =
 				dataInstance.userSelectedNodes.push(node.data);
 			}
 			else {
-				node.rowDiv.classList.remove(checkedBox);
 				node.rowDiv.classList.remove(boldCheck);
 				
 				for(i = 0; i < dataInstance.userSelectedNodes.length; i++) {
@@ -150,7 +147,7 @@ var FOREST_WIDGET_CREATOR =
 		return;
 	}
 	
-	function generateForestLabel(node) {
+	function generateNodeLabel(node) {
 		var i,
 			pipeCount,
 			pipeString,
@@ -160,17 +157,17 @@ var FOREST_WIDGET_CREATOR =
 		pipeString = "<span>";
 		
 		for(i = 0; i < pipeCount; i++) {
-			pipeString += "&#9482;";
+			pipeString += straightPipe;
 		}
 		
 		pipeString += "</span>";
 		
 		//node.spanDiv.style.textIndent = (node.depth * 15) + "px";
-		node.span.innerHTML = pipeString + "&#9494;" + node.data.label;
+		node.span.innerHTML = pipeString + LPipe + node.data.label;
 		
 		i = parent.data.children.length - 1;
 		if(i >= 0) {
-			parent.data.children[i].span.innerHTML = pipeString + "&#9507;" + parent.data.children[i].data.label;
+			parent.data.children[i].span.innerHTML = pipeString + forkPipe + parent.data.children[i].data.label;
 		}
 		
 		return;
@@ -203,7 +200,7 @@ var FOREST_WIDGET_CREATOR =
 		if(parent) {
 			this.data.parent = parent;
 			this.depth = parent.depth + 1;
-			generateForestLabel(this);
+			generateNodeLabel(this);
 		}
 		
 		return;
@@ -215,6 +212,7 @@ var FOREST_WIDGET_CREATOR =
 		(function() {
 			var parentElement = document.getElementById(parentElementID),
 				widgetBody = document.createElement("div"),
+				headerBody = document.createElement("form"),
 				forestContainer = document.createElement("form"),
 				forestBody = document.createElement("div"),
 				forest = [],
@@ -228,19 +226,23 @@ var FOREST_WIDGET_CREATOR =
 				};
 			
 			widgetBody.className = "widget-body";
-			forestContainer.className = "forest-container";
-			forestBody.className = "forest-body";
-			
 			widgetBody.style.width = dataInstance.width;
 			widgetBody.style.height = dataInstance.height;
 			
+			headerBody.className = "header-body";
+			headerBody.innerHTML = "<div><span>A</span><span>D</span><span>S</span></div>";
+			
+			forestContainer.className = "forest-container";
+			forestBody.className = "forest-body";
 			forestContainer.appendChild(forestBody);
+			
+			widgetBody.appendChild(headerBody);
 			widgetBody.appendChild(forestContainer);
 			parentElement.appendChild(widgetBody);
 			
 			function resize() {
 				var diff = (widgetBody.offsetHeight - widgetBody.clientHeight) << 1,
-					neoSize = widgetBody.clientHeight - diff;
+					neoSize = widgetBody.clientHeight - (headerBody.offsetHeight + diff);
 				
 				forestContainer.style.height = neoSize + "px";
 				
@@ -266,7 +268,7 @@ var FOREST_WIDGET_CREATOR =
 				else {
 					node.data.parent = parent;
 					node.depth = parent.depth + 1;
-					generateForestLabel(node);
+					generateNodeLabel(node);
 					
 					parent.data.children.push(node);
 					parent.element.appendChild(node.element);
