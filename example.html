@@ -6,7 +6,7 @@
 	<script src='forest-widget.js'></script>
 	
 	<link rel="stylesheet" type="text/css" href="example.css">
-	<script src='example-locations.js'></script>
+	<!-- <script src='example-locations.js'></script> -->
 	
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -20,6 +20,8 @@
 	
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	
+	<script defer src='examples.js'></script>
 </head>
 
 <body>
@@ -111,13 +113,8 @@
 	<script>
 		//This code is invoked immediately AFTER the parent element has been created
 		var EXAMPLE_FOREST = FOREST_WIDGET_CREATOR.create('forest-widget-container1'),
-			EXAMPLE_FOREST2 = FOREST_WIDGET_CREATOR.create('forest-widget-container2', "100%", "250px"),
-			LOCATION_EXAMPLE = FOREST_WIDGET_CREATOR.create('location-widget'),
-			PATHOGEN_EXAMPLE = FOREST_WIDGET_CREATOR.create('pathogen-widget'),
-			HOST_EXAMPLE = FOREST_WIDGET_CREATOR.create('host-widget'),
-			CONTROL_EXAMPLE = FOREST_WIDGET_CREATOR.create('control-measure-widget'),
-			TYPE_EXAMPLE = FOREST_WIDGET_CREATOR.create('type-widget');
-			
+			EXAMPLE_FOREST2 = FOREST_WIDGET_CREATOR.create('forest-widget-container2', "100%", "250px");
+		
 		function generateForest(FOREST) {
 			var i,
 				j,
@@ -154,13 +151,6 @@
 		EXAMPLE_FOREST.addNode({id: 21, label: 'Disease Transmission Tree Estimators', parent: null});
 		
 		generateForest(EXAMPLE_FOREST2);
-		
-		generateForest(PATHOGEN_EXAMPLE);
-		generateForest(HOST_EXAMPLE);
-		generateForest(CONTROL_EXAMPLE);
-		generateForest(TYPE_EXAMPLE);
-		
-		generateLocationForest(LOCATION_EXAMPLE);
 	</script>
 </body>
 </html>
