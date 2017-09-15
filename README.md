@@ -23,4 +23,5 @@ A live example can be viewed via the following GitHub Page:
 https://terencesperringerjr.github.io/forest-widget/example.html
 
 The B example can be viewed here:
+
 https://terencesperringerjr.github.io/forest-widget/example_b.html
