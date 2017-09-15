@@ -47,10 +47,11 @@ div.widget-body form.forest-container div.forest-body {
 	/**/
 }
 
-.light-font {
-	font-weight: 100;
+.selected {
+	background-color: #AAFFAA;
+	font-weight: 900;
 }
 
-.bold-font {
-	font-weight: 900;
+.included {
+	background-color: #AAAAFF;
 }
