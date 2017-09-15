@@ -6,9 +6,8 @@
 
 var FOREST_WIDGET_CREATOR =
 (function() {
-	var ballotBox = "inherit",
-		checkedBox = "#AAAAFF",
-		boldCheck = "#AAFFAA";
+	var checkedBox = "included",
+		boldCheck = "selected";
 	
 	function ForestWidgetCreator() {
 		return;
@@ -27,7 +26,13 @@ var FOREST_WIDGET_CREATOR =
 		if(parentNode) {
 			if(!parentNode.data.userSelected) {
 				parentNode.input.checked = truth;
-				parentNode.span.style.backgroundColor = truth ? checkedBox: ballotBox;
+				
+				if(truth) {
+					parentNode.span.classList.add(checkedBox);
+				}
+				else {
+					parentNode.span.classList.remove(checkedBox);
+				}
 			}
 			
 			if(parentNode.data.parent) {
@@ -50,7 +55,13 @@ var FOREST_WIDGET_CREATOR =
 			
 			if(!currentNode.data.userSelected) {
 				currentNode.input.checked = truth;
-				currentNode.span.style.backgroundColor = truth ? checkedBox: ballotBox;
+				
+				if(truth) {
+					currentNode.span.classList.add(checkedBox);
+				}
+				else {
+					currentNode.span.classList.remove(checkedBox);
+				}
 			}
 			
 			for(i = 0; i < currentNode.data.children.length; i++) {
@@ -108,7 +119,7 @@ var FOREST_WIDGET_CREATOR =
 			}
 			
 			if(thisNode.data.userSelected) {
-				thisNode.span.style.backgroundColor = boldCheck;
+				thisNode.span.classList.add(boldCheck);
 				
 				for(i = 0; i < dataInstance.userSelectedNodes.length; i++) {
 					if(dataInstance.userSelectedNodes[i] === thisNode.data) {
@@ -119,7 +130,8 @@ var FOREST_WIDGET_CREATOR =
 				dataInstance.userSelectedNodes.push(thisNode.data);
 			}
 			else {
-				thisNode.span.style.backgroundColor = ballotBox;
+				thisNode.span.classList.remove(checkedBox);
+				thisNode.span.classList.remove(boldCheck);
 				
 				thisNode.data.includeAncestors = dataInstance.includeAncestors;
 				thisNode.data.includeDescendants = dataInstance.includeDescendants;
@@ -138,7 +150,8 @@ var FOREST_WIDGET_CREATOR =
 		this.span = document.createElement("span");
 		this.span.innerHTML = this.data.label;
 		
-		this.span.style.backgroundColor = ballotBox;
+		this.span.classList.remove(checkedBox);
+		this.span.classList.remove(boldCheck);
 		
 		this.element.appendChild(this.input);
 		this.element.appendChild(this.span);
