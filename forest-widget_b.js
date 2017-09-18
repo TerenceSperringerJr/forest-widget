@@ -8,7 +8,8 @@ var FOREST_WIDGET_CREATOR =
 (function() {
 	var checkedBox = "included",
 		boldCheck = "selected",
-		straightPipe = "&#9482;",
+		straightPipe = "&#9475;",
+		pipeSpace = "&emsp;",
 		LPipe = "&#9494;",
 		forkPipe = "&#9507;";
 	
@@ -147,27 +148,54 @@ var FOREST_WIDGET_CREATOR =
 		return;
 	}
 	
-	function generateNodeLabel(node) {
+	function regenerateNodeLabels(node, dataInstance) {
 		var i,
-			pipeCount,
+			pipeArray = [],
 			pipeString,
-			parent = node.data.parent;
+			parent,
+			currentNode = node,
+			toVisit = [];
 		
-		pipeCount = node.depth - 1;
-		pipeString = "<span>";
-		
-		for(i = 0; i < pipeCount; i++) {
-			pipeString += straightPipe;
+		while(currentNode.data.parent) {
+			currentNode = currentNode.data.parent;
 		}
 		
-		pipeString += "</span>";
+		if(dataInstance.forest[dataInstance.forest.length - 1] === currentNode) {
+			pipeArray.push(pipeSpace);
+		}
+		else {
+			pipeArray.push(straightPipe);
+		}
 		
-		//node.spanDiv.style.textIndent = (node.depth * 15) + "px";
-		node.span.innerHTML = pipeString + LPipe + node.data.label;
+		for(i = 0; i < currentNode.data.children.length; i++) {
+			toVisit.push(currentNode.data.children[i]);
+		}
 		
-		i = parent.data.children.length - 1;
-		if(i >= 0) {
-			parent.data.children[i].span.innerHTML = pipeString + forkPipe + parent.data.children[i].data.label;
+		while(toVisit.length > 0) {
+			currentNode = toVisit.pop();
+			parent = currentNode.data.parent;
+			
+			while(pipeArray.length < (currentNode.depth + 1)) {
+				pipeArray.push(pipeSpace);
+			}
+			
+			pipeString = "";
+			for(i = 0; i < currentNode.depth; i++) {
+				pipeString += pipeArray[i];
+			}
+			
+			if(parent.data.children[parent.data.children.length - 1] === currentNode) {
+				pipeArray[currentNode.depth] = pipeSpace;
+				currentNode.span.innerHTML = "<span>" + pipeString + LPipe + "</span>" + currentNode.data.label;
+			}
+			else {
+				pipeArray[currentNode.depth] = straightPipe;
+				currentNode.span.innerHTML = "<span>" + pipeString + forkPipe + "</span>" + currentNode.data.label;
+			}
+			
+			for(i = 0; i < currentNode.data.children.length; i++) {
+				toVisit.push(currentNode.data.children[i]);
+			}
 		}
 		
 		return;
@@ -200,7 +228,7 @@ var FOREST_WIDGET_CREATOR =
 		if(parent) {
 			this.data.parent = parent;
 			this.depth = parent.depth + 1;
-			generateNodeLabel(this);
+			regenerateNodeLabels(this, dataInstance);
 		}
 		
 		return;
@@ -222,7 +250,8 @@ var FOREST_WIDGET_CREATOR =
 					includeDescendants: false,
 					width: width ? width: "100%",
 					height: height ? height: "100%",
-					widgetBody: widgetBody
+					widgetBody: widgetBody,
+					forest: forest
 				};
 			
 			widgetBody.className = "widget-body";
@@ -268,7 +297,7 @@ var FOREST_WIDGET_CREATOR =
 				else {
 					node.data.parent = parent;
 					node.depth = parent.depth + 1;
-					generateNodeLabel(node);
+					regenerateNodeLabels(node, dataInstance);
 					
 					parent.data.children.push(node);
 					parent.element.appendChild(node.element);
