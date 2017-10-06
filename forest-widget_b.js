@@ -161,7 +161,7 @@ var FOREST_WIDGET_CREATOR =
 		}
 		
 		if(dataInstance.forest[dataInstance.forest.length - 1] === currentNode) {
-			pipeArray.push(pipeSpace);
+			pipeArray.push("");
 		}
 		else {
 			pipeArray.push(straightPipe);
@@ -297,9 +297,9 @@ var FOREST_WIDGET_CREATOR =
 				else {
 					node.data.parent = parent;
 					node.depth = parent.depth + 1;
+					parent.data.children.push(node);
 					regenerateNodeLabels(node, dataInstance);
 					
-					parent.data.children.push(node);
 					parent.element.appendChild(node.element);
 				}
 				
@@ -318,6 +318,7 @@ var FOREST_WIDGET_CREATOR =
 				}
 				else {
 					node.data.parent.data.children.push(node);
+					regenerateNodeLabels(node, dataInstance);
 					node.data.parent.element.appendChild(node.element);
 				}
 				
