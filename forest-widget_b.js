@@ -90,6 +90,7 @@ var FOREST_WIDGET_CREATOR =
 		node.span.innerHTML = node.data.label;
 		
 		node.ancestorsInput.type = "checkbox";
+		node.ancestorsInput.disabled = true;
 		node.ancestorsInput.onchange = function() {
 			node.data.includeAncestors = node.ancestorsInput.checked;
 			toggleAncestors(node, node.data.includeAncestors);
@@ -98,6 +99,7 @@ var FOREST_WIDGET_CREATOR =
 		}
 		
 		node.descendantsInput.type = "checkbox";
+		node.descendantsInput.disabled = true;
 		node.descendantsInput.onchange = function() {
 			node.data.includeDescendants = node.descendantsInput.checked;
 			toggleDescendants(node, node.data.includeDescendants);
@@ -161,7 +163,7 @@ var FOREST_WIDGET_CREATOR =
 		}
 		
 		if(dataInstance.forest[dataInstance.forest.length - 1] === currentNode) {
-			pipeArray.push(pipeSpace);
+			pipeArray.push("");
 		}
 		else {
 			pipeArray.push(straightPipe);
@@ -295,11 +297,13 @@ var FOREST_WIDGET_CREATOR =
 					forest.push(node);
 				}
 				else {
+					node.ancestorsInput.disabled = false;
+					parent.descendantsInput.disabled = false;
 					node.data.parent = parent;
 					node.depth = parent.depth + 1;
+					parent.data.children.push(node);
 					regenerateNodeLabels(node, dataInstance);
 					
-					parent.data.children.push(node);
 					parent.element.appendChild(node.element);
 				}
 				
@@ -317,7 +321,10 @@ var FOREST_WIDGET_CREATOR =
 					forest.push(node);
 				}
 				else {
+					node.ancestorsInput.disabled = false;
+					node.data.parent.descendantsInput.disabled = false;
 					node.data.parent.data.children.push(node);
+					regenerateNodeLabels(node, dataInstance);
 					node.data.parent.element.appendChild(node.element);
 				}
 				
