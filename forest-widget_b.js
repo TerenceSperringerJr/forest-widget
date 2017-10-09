@@ -11,7 +11,10 @@ var FOREST_WIDGET_CREATOR =
 		straightPipe = "&#9475;",
 		pipeSpace = "&emsp;",
 		LPipe = "&#9494;",
-		forkPipe = "&#9507;";
+		forkPipe = "&#9507;",
+		ascendantIcon = "<i class='material-icons'>supervisor_account</i>",
+		descendantIcon = "<i class='material-icons'>child_care</i>",
+		selfIcon = "<i class='material-icons'>person</i>";
 	
 	function ForestWidgetCreator() {
 		return;
@@ -261,7 +264,7 @@ var FOREST_WIDGET_CREATOR =
 			widgetBody.style.height = dataInstance.height;
 			
 			headerBody.className = "header-body";
-			headerBody.innerHTML = "<div><span>A</span><span>D</span><span>S</span></div>";
+			headerBody.innerHTML = "<div style='margin-left: 1px;'>" + ascendantIcon + descendantIcon + selfIcon + "</div>";
 			
 			forestContainer.className = "forest-container";
 			forestBody.className = "forest-body";
