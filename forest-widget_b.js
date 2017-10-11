@@ -12,9 +12,9 @@ var FOREST_WIDGET_CREATOR =
 		pipeSpace = "&emsp;",
 		LPipe = "&#9494;",
 		forkPipe = "&#9507;",
-		ascendantIcon = "<i class='material-icons'>supervisor_account</i>",
-		descendantIcon = "<i class='material-icons'>child_care</i>",
-		selfIcon = "<i class='material-icons'>person</i>";
+		ascendantIcon = "<div class='ancestors'><span>Ancestors</span></div>",
+		descendantIcon = "<div class='descendants'><span>" + straightPipe + "Descendants</span></div>",
+		selfIcon = "<div class='self'><span>" + straightPipe + straightPipe + "Self</span></div>";
 	
 	function ForestWidgetCreator() {
 		return;
@@ -34,10 +34,10 @@ var FOREST_WIDGET_CREATOR =
 			parentNode.ancestorsInput.checked = truth;
 			
 			if(truth) {
-				parentNode.rowDiv.classList.add(checkedBox);
+				parentNode.element.classList.add(checkedBox);
 			}
 			else if(!parentNode.descendantsInput.checked) {
-				parentNode.rowDiv.classList.remove(checkedBox);
+				parentNode.element.classList.remove(checkedBox);
 			}
 			
 			if(parentNode.data.parent) {
@@ -60,14 +60,37 @@ var FOREST_WIDGET_CREATOR =
 			currentNode.descendantsInput.checked = truth;
 			
 			if(truth) {
-				currentNode.rowDiv.classList.add(checkedBox);
+				currentNode.element.classList.add(checkedBox);
 			}
 			else  if(!currentNode.ancestorsInput.checked) {
-				currentNode.rowDiv.classList.remove(checkedBox);
+				currentNode.element.classList.remove(checkedBox);
 			}
 			
 			for(i = 0; i < currentNode.data.children.length; i++) {
 				queue.push(currentNode.data.children[i]);
+			}
+		}
+		
+		return;
+	}
+	
+	function applyToAllNodes(forest, method) {
+		var toVisit = [],
+			currentNode,
+			i,
+			j;
+		
+		for(i = 0; i < forest.length; i++) {
+			toVisit.push(forest[i]);
+		}
+		
+		while(toVisit.length > 0) {
+			currentNode = toVisit.shift();
+			
+			method(currentNode);
+			
+			for(j = 0; j < currentNode.data.children.length; j++) {
+				toVisit.push(currentNode.data.children[j]);
 			}
 		}
 		
@@ -79,15 +102,16 @@ var FOREST_WIDGET_CREATOR =
 		
 		node.span = document.createElement("span")
 		
-		node.rowDiv = document.createElement("div");
 		node.spanDiv = document.createElement("div");
 		node.inputDiv = document.createElement("div");
 		
 		node.inputDiv.classList.add("checkbox-div");
 		node.spanDiv.classList.add("span-div");
 		
-		node.ancestorsInput = document.createElement("input"),
-		node.descendantsInput = document.createElement("input"),
+		node.ancestorsInput = document.createElement("input");
+		node.ancestorsInput.hidden = dataInstance.headerBody.hidden;
+		node.descendantsInput = document.createElement("input");
+		node.descendantsInput.hidden = dataInstance.headerBody.hidden;
 		node.selfInput = document.createElement("input");
 		
 		node.span.innerHTML = node.data.label;
@@ -117,7 +141,7 @@ var FOREST_WIDGET_CREATOR =
 			node.data.userSelected = this.checked;
 			
 			if(node.data.userSelected) {
-				node.rowDiv.classList.add(boldCheck);
+				node.element.classList.add(boldCheck);
 				
 				for(i = 0; i < dataInstance.userSelectedNodes.length; i++) {
 					if(dataInstance.userSelectedNodes[i] === node.data) {
@@ -128,7 +152,7 @@ var FOREST_WIDGET_CREATOR =
 				dataInstance.userSelectedNodes.push(node.data);
 			}
 			else {
-				node.rowDiv.classList.remove(boldCheck);
+				node.element.classList.remove(boldCheck);
 				
 				for(i = 0; i < dataInstance.userSelectedNodes.length; i++) {
 					if(dataInstance.userSelectedNodes[i] === node.data) {
@@ -146,9 +170,8 @@ var FOREST_WIDGET_CREATOR =
 		node.inputDiv.appendChild(node.selfInput);
 		
 		node.spanDiv.appendChild(node.span);
-		node.rowDiv.appendChild(node.inputDiv);
-		node.rowDiv.appendChild(node.spanDiv);
-		node.element.appendChild(node.rowDiv);
+		node.element.appendChild(node.inputDiv);
+		node.element.appendChild(node.spanDiv);
 		
 		return;
 	}
@@ -255,6 +278,7 @@ var FOREST_WIDGET_CREATOR =
 					includeDescendants: false,
 					width: width ? width: "100%",
 					height: height ? height: "100%",
+					headerBody: headerBody,
 					widgetBody: widgetBody,
 					forest: forest
 				};
@@ -264,7 +288,8 @@ var FOREST_WIDGET_CREATOR =
 			widgetBody.style.height = dataInstance.height;
 			
 			headerBody.className = "header-body";
-			headerBody.innerHTML = "<div style='margin-left: 1px;'>" + ascendantIcon + descendantIcon + selfIcon + "</div>";
+			headerBody.hidden = true;
+			headerBody.innerHTML = "<div style='margin-left: 3px;'>" + ascendantIcon + descendantIcon + selfIcon + "</div>";
 			
 			forestContainer.className = "forest-container";
 			forestBody.className = "forest-body";
@@ -293,6 +318,13 @@ var FOREST_WIDGET_CREATOR =
 				return new Node(node, null, null, dataInstance);
 			}
 			
+			function displayCheckboxes(node) {
+				node.ancestorsInput.hidden = false;
+				node.descendantsInput.hidden = false;
+				
+				return;
+			}
+			
 			thisForestWidget.addNodeByReference = function(node, parent) {
 				forestBody.appendChild(node.element);
 				
@@ -308,6 +340,11 @@ var FOREST_WIDGET_CREATOR =
 					regenerateNodeLabels(node, dataInstance);
 					
 					parent.element.appendChild(node.element);
+					
+					if(headerBody.hidden) {
+						headerBody.hidden = false;
+						applyToAllNodes(forest, displayCheckboxes);
+					}
 				}
 				
 				resize();
@@ -329,6 +366,11 @@ var FOREST_WIDGET_CREATOR =
 					node.data.parent.data.children.push(node);
 					regenerateNodeLabels(node, dataInstance);
 					node.data.parent.element.appendChild(node.element);
+					
+					if(headerBody.hidden) {
+						headerBody.hidden = false;
+						applyToAllNodes(forest, displayCheckboxes);
+					}
 				}
 				
 				resize();
