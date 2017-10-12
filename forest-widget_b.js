@@ -34,10 +34,10 @@ var FOREST_WIDGET_CREATOR =
 			parentNode.ancestorsInput.checked = truth;
 			
 			if(truth) {
-				parentNode.element.classList.add(checkedBox);
+				parentNode.rowDiv.classList.add(checkedBox);
 			}
 			else if(!parentNode.descendantsInput.checked) {
-				parentNode.element.classList.remove(checkedBox);
+				parentNode.rowDiv.classList.remove(checkedBox);
 			}
 			
 			if(parentNode.data.parent) {
@@ -60,10 +60,10 @@ var FOREST_WIDGET_CREATOR =
 			currentNode.descendantsInput.checked = truth;
 			
 			if(truth) {
-				currentNode.element.classList.add(checkedBox);
+				currentNode.rowDiv.classList.add(checkedBox);
 			}
 			else  if(!currentNode.ancestorsInput.checked) {
-				currentNode.element.classList.remove(checkedBox);
+				currentNode.rowDiv.classList.remove(checkedBox);
 			}
 			
 			for(i = 0; i < currentNode.data.children.length; i++) {
@@ -102,6 +102,7 @@ var FOREST_WIDGET_CREATOR =
 		
 		node.span = document.createElement("span")
 		
+		node.rowDiv = document.createElement("div");
 		node.spanDiv = document.createElement("div");
 		node.inputDiv = document.createElement("div");
 		
@@ -141,7 +142,7 @@ var FOREST_WIDGET_CREATOR =
 			node.data.userSelected = this.checked;
 			
 			if(node.data.userSelected) {
-				node.element.classList.add(boldCheck);
+				node.rowDiv.classList.add(boldCheck);
 				
 				for(i = 0; i < dataInstance.userSelectedNodes.length; i++) {
 					if(dataInstance.userSelectedNodes[i] === node.data) {
@@ -152,7 +153,7 @@ var FOREST_WIDGET_CREATOR =
 				dataInstance.userSelectedNodes.push(node.data);
 			}
 			else {
-				node.element.classList.remove(boldCheck);
+				node.rowDiv.classList.remove(boldCheck);
 				
 				for(i = 0; i < dataInstance.userSelectedNodes.length; i++) {
 					if(dataInstance.userSelectedNodes[i] === node.data) {
@@ -170,8 +171,9 @@ var FOREST_WIDGET_CREATOR =
 		node.inputDiv.appendChild(node.selfInput);
 		
 		node.spanDiv.appendChild(node.span);
-		node.element.appendChild(node.inputDiv);
-		node.element.appendChild(node.spanDiv);
+		node.rowDiv.appendChild(node.inputDiv);
+		node.rowDiv.appendChild(node.spanDiv);
+		node.element.appendChild(node.rowDiv);
 		
 		return;
 	}
