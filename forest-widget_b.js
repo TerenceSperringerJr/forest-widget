@@ -12,9 +12,10 @@ var FOREST_WIDGET_CREATOR =
 		pipeSpace = "&emsp;",
 		LPipe = "&#9494;",
 		forkPipe = "&#9507;",
+		spacer = "&emsp;",
 		ascendantIcon = "<div class='ancestors'><span>Ancestors</span></div>",
-		descendantIcon = "<div class='descendants'><span>" + straightPipe + "Descendants</span></div>",
-		selfIcon = "<div class='self'><span>" + straightPipe + straightPipe + "Self</span></div>";
+		descendantIcon = "<div class='descendants'><span class='ancestors'>" + spacer + "</span><span>Descendants</span></div>",
+		selfIcon = "<div class='self'><span class='ancestors'>" + spacer + "</span><span class='descendants'>" + spacer + "</span><span>Self</span></div>";
 	
 	function ForestWidgetCreator() {
 		return;
@@ -98,9 +99,16 @@ var FOREST_WIDGET_CREATOR =
 	}
 	
 	function createCheckboxes(node, dataInstance) {
-		var i;
+		var i,
+			ancestorSpan = document.createElement("span"),
+			descendantSpan = document.createElement("span"),
+			selfSpan = document.createElement("span");
 		
-		node.span = document.createElement("span")
+		ancestorSpan.classList = "ancestors";
+		descendantSpan.classList = "descendants";
+		selfSpan.classList = "self";
+		
+		node.span = document.createElement("span");
 		
 		node.rowDiv = document.createElement("div");
 		node.spanDiv = document.createElement("div");
@@ -166,9 +174,12 @@ var FOREST_WIDGET_CREATOR =
 			return;
 		}
 		
-		node.inputDiv.appendChild(node.ancestorsInput);
-		node.inputDiv.appendChild(node.descendantsInput);
-		node.inputDiv.appendChild(node.selfInput);
+		ancestorSpan.appendChild(node.ancestorsInput);
+		descendantSpan.appendChild(node.descendantsInput);
+		selfSpan.appendChild(node.selfInput);
+		node.inputDiv.appendChild(ancestorSpan);
+		node.inputDiv.appendChild(descendantSpan);
+		node.inputDiv.appendChild(selfSpan);
 		
 		node.spanDiv.appendChild(node.span);
 		node.rowDiv.appendChild(node.inputDiv);
@@ -291,7 +302,7 @@ var FOREST_WIDGET_CREATOR =
 			
 			headerBody.className = "header-body";
 			headerBody.hidden = true;
-			headerBody.innerHTML = "<div style='margin-left: 3px;'>" + ascendantIcon + descendantIcon + selfIcon + "</div>";
+			headerBody.innerHTML = "<div>" + ascendantIcon + descendantIcon + selfIcon + "</div>";
 			
 			forestContainer.className = "forest-container";
 			forestBody.className = "forest-body";

@@ -59,6 +59,21 @@ div.forest-body div.node {
 	line-height: 0;
 }
 
+.ancestors {
+	background-color: #fb9a98;
+	padding-left: 1px;
+}
+
+.descendants {
+	background-color: #a5cee3;
+	padding-left: 1px;
+}
+
+.self {
+	background-color: #b1df8a;
+	padding-left: 1px;
+}
+
 /*
 div.ancestors {
 	transform: matrix(0.7, -0.3, 0.3, 0.7, -10, 21);
