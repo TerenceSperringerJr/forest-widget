@@ -125,11 +125,41 @@ var FOREST_WIDGET_CREATOR =
 		
 		node.span.innerHTML = node.data.label;
 		
+		function enlistCurrentNode() {
+			for(i = 0; i < dataInstance.userSelectedNodes.length; i++) {
+				if(dataInstance.userSelectedNodes[i] === node.data) {
+					return;
+				}
+			}
+			
+			dataInstance.userSelectedNodes.push(node.data);
+			
+			return;
+		}
+		
+		function delistCurrentNode() {
+			for(i = 0; i < dataInstance.userSelectedNodes.length; i++) {
+				if(dataInstance.userSelectedNodes[i] === node.data) {
+					dataInstance.userSelectedNodes.splice(i, 1);
+					break;
+				}
+			}
+			
+			return;
+		}
+		
 		node.ancestorsInput.type = "checkbox";
 		node.ancestorsInput.disabled = true;
 		node.ancestorsInput.onchange = function() {
 			node.data.includeAncestors = node.ancestorsInput.checked;
 			toggleAncestors(node, node.data.includeAncestors);
+			
+			if(node.data.includeAncestors) {
+				enlistCurrentNode();
+			}
+			else if((!node.data.userSelected) && (!node.data.includeDescendants)) {
+				delistCurrentNode();
+			}
 			
 			return;
 		}
@@ -139,6 +169,13 @@ var FOREST_WIDGET_CREATOR =
 		node.descendantsInput.onchange = function() {
 			node.data.includeDescendants = node.descendantsInput.checked;
 			toggleDescendants(node, node.data.includeDescendants);
+			
+			if(node.data.includeDescendants) {
+				enlistCurrentNode();
+			}
+			else if((!node.data.userSelected) && (!node.data.includeAncestors)) {
+				delistCurrentNode();
+			}
 			
 			return;
 		}
@@ -150,25 +187,12 @@ var FOREST_WIDGET_CREATOR =
 			node.data.userSelected = this.checked;
 			
 			if(node.data.userSelected) {
+				enlistCurrentNode();
 				node.rowDiv.classList.add(boldCheck);
-				
-				for(i = 0; i < dataInstance.userSelectedNodes.length; i++) {
-					if(dataInstance.userSelectedNodes[i] === node.data) {
-						return;
-					}
-				}
-				
-				dataInstance.userSelectedNodes.push(node.data);
 			}
-			else {
+			else if((!node.data.includeAncestors) && (!node.data.includeDescendants)) {
+				delistCurrentNode();
 				node.rowDiv.classList.remove(boldCheck);
-				
-				for(i = 0; i < dataInstance.userSelectedNodes.length; i++) {
-					if(dataInstance.userSelectedNodes[i] === node.data) {
-						dataInstance.userSelectedNodes.splice(i, 1);
-						break;
-					}
-				}
 			}
 			
 			return;
