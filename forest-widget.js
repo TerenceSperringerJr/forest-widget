@@ -72,6 +72,49 @@ var FOREST_WIDGET_CREATOR =
 		return;
 	}
 	
+	function flashOptionsBox(optionsBody) {
+		var frameTime = new Date().getTime(),
+			rComponent = 255,
+			gComponent = 0,
+			bComponent = 0,
+			flasher = setInterval(function flashBox() {
+					var time = new Date().getTime();
+					
+					if((rComponent > 0) && (bComponent === 0)) {
+						rComponent -= 3;
+						gComponent += 3;
+					}
+					else if((gComponent > 0) && (rComponent === 0)) {
+						bComponent += 3;
+						gComponent -= 3;
+					}
+					else {
+						rComponent += 3;
+						bComponent -= 3;
+					}
+					
+					if(time - frameTime > 85) {
+						frameTime = time;
+						optionsBody.style.color = "rgb(" + rComponent + ", " + gComponent + ", " + bComponent + ")";
+						optionsBody.style.bordercolor = "rgb(" + (255 - rComponent) + ", " + (255 - gComponent) + ", " + (255 - bComponent) + ")";
+					}
+					
+					return;
+				},
+				0
+			);
+		
+		setTimeout(function() {
+				clearInterval(flasher);
+				optionsBody.style.borderColor = "";
+				optionsBody.style.color = "";
+			},
+			1000
+		);
+		
+		return;
+	}
+	
 	function Node(label, id, parent, dataInstance) {
 		var thisNode = this,
 			i;
@@ -81,6 +124,7 @@ var FOREST_WIDGET_CREATOR =
 		
 		this.data = {
 			id: -1,
+			node: this,
 			label: label,
 			parent: null,
 			children: [],
@@ -109,6 +153,8 @@ var FOREST_WIDGET_CREATOR =
 			thisNode.data.userSelected = this.checked;
 			thisNode.data.includeAncestors = dataInstance.includeAncestors;
 			thisNode.data.includeDescendants = dataInstance.includeDescendants;
+			
+			flashOptionsBox(dataInstance.optionsBody);
 			
 			if(thisNode.data.includeAncestors) {
 				toggleAncestors(thisNode.data.parent, thisNode.data.userSelected);
@@ -219,8 +265,21 @@ var FOREST_WIDGET_CREATOR =
 				return div;
 			}
 			
+			function createClearButton() {
+				var div = document.createElement("div"),
+					button = document.createElement("button");
+				
+				button.innerHTML = "Clear";
+				button.type = "button";
+				button.onclick = function() { thisForestWidget.clearAll(); };
+				div.appendChild(button);
+				
+				return div;
+			}
+			
 			optionsBody.appendChild(createCheckbox("ancestors", "Include ancestors"));
 			optionsBody.appendChild(createCheckbox("descendants", "Include descendants"));
+			optionsBody.appendChild(createClearButton());
 			
 			widgetBody.appendChild(optionsBody);
 			forestContainer.appendChild(forestBody);
@@ -237,6 +296,23 @@ var FOREST_WIDGET_CREATOR =
 			}
 			
 			window.addEventListener("resize", resize);
+			
+			thisForestWidget.clearAll = function() {
+				var i;
+				
+				for(i = 0; i < dataInstance.userSelectedNodes.length; i++) {
+					dataInstance.userSelectedNodes[i].node.input.checked = false;
+					dataInstance.userSelectedNodes[i].node.span.classList.remove(checkedBox);
+					dataInstance.userSelectedNodes[i].node.span.classList.remove(boldCheck);
+					
+					toggleAncestors(dataInstance.userSelectedNodes[i].node, false);
+					toggleDescendants(dataInstance.userSelectedNodes[i].node, false);
+				}
+				
+				dataInstance.userSelectedNodes = [];
+				
+				return;
+			}
 			
 			thisForestWidget.createNode = function(node) {
 				if(node.id) {
