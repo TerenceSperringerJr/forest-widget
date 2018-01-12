@@ -126,7 +126,7 @@ var FOREST_WIDGET_CREATOR =
 		var thisNode = this,
 			i;
 		
-		this.input;
+		this.input = document.createElement("input");
 		this.depth = 0;
 		
 		this.data = {
@@ -153,7 +153,6 @@ var FOREST_WIDGET_CREATOR =
 			this.element.style.textIndent = this.depth + "px";
 		}
 		
-		this.input = document.createElement("input");
 		this.input.id = "node-" + this.data.id;
 		this.input.type = "checkbox";
 		this.input.onchange = function() {
