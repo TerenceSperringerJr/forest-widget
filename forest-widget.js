@@ -7,7 +7,12 @@
 var FOREST_WIDGET_CREATOR =
 (function() {
 	var checkedBox = "included",
-		boldCheck = "selected";
+		boldCheck = "selected",
+		straightPipe = "&#9475;",
+		pipeSpace = "&emsp;",
+		LPipe = "&#9494;",
+		forkPipe = "&#9507;",
+		spacer = "&emsp;";
 	
 	function ForestWidgetCreator() {
 		return;
@@ -97,6 +102,7 @@ var FOREST_WIDGET_CREATOR =
 						frameTime = time;
 						optionsBody.style.color = "rgb(" + rComponent + ", " + gComponent + ", " + bComponent + ")";
 						optionsBody.style.bordercolor = "rgb(" + (255 - rComponent) + ", " + (255 - gComponent) + ", " + (255 - bComponent) + ")";
+						optionsBody.style.fontWeight = "bold";
 					}
 					
 					return;
@@ -108,6 +114,7 @@ var FOREST_WIDGET_CREATOR =
 				clearInterval(flasher);
 				optionsBody.style.borderColor = "";
 				optionsBody.style.color = "";
+				optionsBody.style.fontWeight = "";
 			},
 			1000
 		);
