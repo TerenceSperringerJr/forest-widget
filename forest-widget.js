@@ -247,6 +247,7 @@ var FOREST_WIDGET_CREATOR =
 				
 				input.type = "checkbox";
 				input.value = value;
+				div.style.textIndent = "10px";
 				
 				if(value === "ancestors") {
 					input.onchange = function() {
@@ -275,13 +276,24 @@ var FOREST_WIDGET_CREATOR =
 				var div = document.createElement("div"),
 					button = document.createElement("button");
 				
-				button.innerHTML = "Clear";
+				button.innerHTML = "Clear all";
 				button.type = "button";
 				button.onclick = function() { thisForestWidget.clearAll(); };
 				div.appendChild(button);
 				
 				return div;
 			}
+			
+			(function() {
+				var div = document.createElement("div"),
+					instructions = document.createElement("span");
+				
+				instructions.innerHTML = "For next selection:";
+				div.appendChild(instructions);
+				optionsBody.appendChild(div);
+				
+				return;
+			})();
 			
 			optionsBody.appendChild(createCheckbox("ancestors", "Include ancestors"));
 			optionsBody.appendChild(createCheckbox("descendants", "Include descendants"));
