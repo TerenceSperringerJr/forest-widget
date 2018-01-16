@@ -66,10 +66,10 @@ div.span-div {
 
 .selected,
 .selected.included {
-	background-color: #b1df8a;
+	background-color: #FFFF99;
 	font-weight: 900;
 }
 
 .included {
-	background-color: #AAAAFF;
+	background-color: #FFFF99;
 }
