@@ -160,7 +160,7 @@ var FOREST_WIDGET_CREATOR =
 			thisNode.data.includeAncestors = dataInstance.includeAncestors;
 			thisNode.data.includeDescendants = dataInstance.includeDescendants;
 			
-			flashOptionsBox(dataInstance.optionsBody);
+			//flashOptionsBox(dataInstance.optionsBody);
 			
 			if(thisNode.data.includeAncestors) {
 				toggleAncestors(thisNode.data.parent, thisNode.data.userSelected);
@@ -287,9 +287,9 @@ var FOREST_WIDGET_CREATOR =
 			optionsBody.appendChild(createCheckbox("descendants", "Include descendants"));
 			optionsBody.appendChild(createClearButton());
 			
-			widgetBody.appendChild(optionsBody);
 			forestContainer.appendChild(forestBody);
 			widgetBody.appendChild(forestContainer);
+			widgetBody.appendChild(optionsBody);
 			parentElement.appendChild(widgetBody);
 			
 			function resize() {

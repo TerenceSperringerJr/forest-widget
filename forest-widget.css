@@ -35,6 +35,7 @@ div.widget-body form.forest-container div.forest-body div.node input[type=checkb
 }
 
 div.widget-body form.forest-container {
+	margin-bottom: 2px;
 	border-radius: 5px;
 	border-style: solid;
 	border-width: 1px;
