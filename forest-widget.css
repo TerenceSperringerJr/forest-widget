@@ -10,21 +10,24 @@ div.widget-body {
 	display: inline-block;
 	vertical-align: top;
 	box-sizing: border-box;
+	background-color: #0d2b64;
 }
 
 div.widget-body form.options-body {
 	border-radius: 5px;
 	border-style: solid;
 	border-width: 1px;
-	margin-bottom: 2px;
+	margin-bottom: 1px;
 	width: 100%;
 	white-space: nowrap;
 	overflow: auto;
+	background-color: #ffffff;
 }
 
 div.widget-body form.options-body,
 div.widget-body form.forest-container {
 	padding: 1px;
+	background-color: #ffffff;
 }
 
 div.widget-body form.options-body input[type=checkbox],
@@ -35,7 +38,7 @@ div.widget-body form.forest-container div.forest-body div.node input[type=checkb
 }
 
 div.widget-body form.forest-container {
-	margin-bottom: 2px;
+	margin-bottom: 1px;
 	border-radius: 5px;
 	border-style: solid;
 	border-width: 1px;
@@ -58,6 +61,11 @@ div.widget-body form.forest-container div.forest-body {
 div.checkbox-div,
 div.span-div {
 	display: inline-block;
+}
+
+button.clear-button {
+	position: relative;
+	right: 10%;
 }
 
 .light-font {

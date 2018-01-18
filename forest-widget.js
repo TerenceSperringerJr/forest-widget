@@ -220,6 +220,7 @@ var FOREST_WIDGET_CREATOR =
 				forestContainer = document.createElement("form"),
 				forestBody = document.createElement("div"),
 				optionsBody = document.createElement("form"),
+				optionsDiv = document.createElement("div"),
 				forest = [],
 				dataInstance = {
 					userSelectedNodes: [],
@@ -273,15 +274,17 @@ var FOREST_WIDGET_CREATOR =
 			}
 			
 			function createClearButton() {
-				var div = document.createElement("div"),
-					button = document.createElement("button");
+				var button = document.createElement("button");
 				
 				button.innerHTML = "Clear all";
 				button.type = "button";
+				button.classList.add("clear-button");
+				button.classList.add("btn");
+				button.classList.add("btn-sm");
+				button.classList.add("btn-primary");
 				button.onclick = function() { thisForestWidget.clearAll(); };
-				div.appendChild(button);
 				
-				return div;
+				return button;
 			}
 			
 			(function() {
@@ -290,14 +293,24 @@ var FOREST_WIDGET_CREATOR =
 				
 				instructions.innerHTML = "For next selection:";
 				div.appendChild(instructions);
-				optionsBody.appendChild(div);
+				optionsDiv.appendChild(div);
 				
 				return;
 			})();
 			
-			optionsBody.appendChild(createCheckbox("ancestors", "Include ancestors"));
-			optionsBody.appendChild(createCheckbox("descendants", "Include descendants"));
-			optionsBody.appendChild(createClearButton());
+			optionsDiv.appendChild(createCheckbox("ancestors", "Include ancestors"));
+			optionsDiv.appendChild(createCheckbox("descendants", "Include descendants"));
+			optionsDiv.style.display = "inline-block";
+			optionsDiv.style.width="50%";
+			optionsBody.appendChild(optionsDiv);
+			
+			optionsDiv = document.createElement("div");
+			optionsDiv.appendChild(createClearButton());
+			optionsDiv.style.width="50%";
+			optionsDiv.style.display = "inline-block";
+			optionsDiv.style.textAlign = "right";
+			optionsDiv.style.verticalAlign = "top";
+			optionsBody.appendChild(optionsDiv);
 			
 			forestContainer.appendChild(forestBody);
 			widgetBody.appendChild(forestContainer);
@@ -319,6 +332,7 @@ var FOREST_WIDGET_CREATOR =
 				var i;
 				
 				for(i = 0; i < dataInstance.userSelectedNodes.length; i++) {
+					dataInstance.userSelectedNodes[i].node.data.userSelected = false;
 					dataInstance.userSelectedNodes[i].node.input.checked = false;
 					dataInstance.userSelectedNodes[i].node.span.classList.remove(checkedBox);
 					dataInstance.userSelectedNodes[i].node.span.classList.remove(boldCheck);
