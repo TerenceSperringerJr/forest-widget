@@ -69,7 +69,7 @@ span.spanLabel {
 
 button.clear-button {
 	position: relative;
-	right: 10%;
+	right: auto;
 }
 
 .light-font {
