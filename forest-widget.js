@@ -202,6 +202,7 @@ var FOREST_WIDGET_CREATOR =
 		this.span = document.createElement("span");
 		this.span.innerHTML = this.data.label;
 		
+		this.span.classList.add("spanLabel");
 		this.span.classList.remove(checkedBox);
 		this.span.classList.remove(boldCheck);
 		
@@ -267,6 +268,7 @@ var FOREST_WIDGET_CREATOR =
 				
 				div.appendChild(input);
 				span = document.createElement("span");
+				span.classList.add("spanLabel");
 				span.innerHTML = label;
 				div.appendChild(span);
 				
@@ -310,6 +312,7 @@ var FOREST_WIDGET_CREATOR =
 			optionsDiv.style.display = "inline-block";
 			optionsDiv.style.textAlign = "right";
 			optionsDiv.style.verticalAlign = "top";
+			optionsDiv.style.marginTop = "2px";
 			optionsBody.appendChild(optionsDiv);
 			
 			forestContainer.appendChild(forestBody);
