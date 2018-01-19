@@ -222,6 +222,9 @@ var FOREST_WIDGET_CREATOR =
 				forestBody = document.createElement("div"),
 				optionsBody = document.createElement("form"),
 				optionsDiv = document.createElement("div"),
+				clearDiv = document.createElement("div"),
+				hasDescendants = false,
+				clearButton = createClearButton(),
 				forest = [],
 				dataInstance = {
 					userSelectedNodes: [],
@@ -300,24 +303,37 @@ var FOREST_WIDGET_CREATOR =
 				return;
 			})();
 			
-			optionsDiv.appendChild(createCheckbox("ancestors", "Include ancestors"));
-			optionsDiv.appendChild(createCheckbox("descendants", "Include descendants"));
-			optionsDiv.style.display = "inline-block";
-			optionsDiv.style.width="50%";
-			optionsBody.appendChild(optionsDiv);
-			
-			optionsDiv = document.createElement("div");
-			optionsDiv.appendChild(createClearButton());
-			optionsDiv.style.width="50%";
-			optionsDiv.style.display = "inline-block";
-			optionsDiv.style.textAlign = "right";
-			optionsDiv.style.verticalAlign = "top";
-			optionsDiv.style.marginTop = "2px";
-			optionsBody.appendChild(optionsDiv);
+			function showOptions() {
+				if(!hasDescendants) {
+					hasDescendants = true;
+					
+					optionsDiv.style.display = "inline-block";
+					clearButton.style.right = "10%";
+					clearDiv.style.textAlign = "right";
+				}
+				
+				return;
+			}
 			
 			forestContainer.appendChild(forestBody);
 			widgetBody.appendChild(forestContainer);
+			
+			optionsDiv.appendChild(createCheckbox("ancestors", "Include ancestors"));
+			optionsDiv.appendChild(createCheckbox("descendants", "Include descendants"));
+			optionsDiv.style.display = "none";
+			optionsDiv.style.width="50%";
+			optionsBody.appendChild(optionsDiv);
+			
+			clearDiv = document.createElement("div");
+			clearDiv.appendChild(clearButton);
+			clearDiv.style.width="50%";
+			clearDiv.style.display = "inline-block";
+			clearDiv.style.verticalAlign = "top";
+			clearDiv.style.marginTop = "2px";
+			optionsBody.appendChild(clearDiv);
 			widgetBody.appendChild(optionsBody);
+			
+			
 			parentElement.appendChild(widgetBody);
 			
 			function resize() {
@@ -369,6 +385,7 @@ var FOREST_WIDGET_CREATOR =
 					node.element.style.textIndent = node.depth + "px";
 					parent.data.children.push(node);
 					parent.element.appendChild(node.element);
+					showOptions();
 				}
 				
 				resize();
@@ -387,6 +404,7 @@ var FOREST_WIDGET_CREATOR =
 				else {
 					node.data.parent.data.children.push(node);
 					node.data.parent.element.appendChild(node.element);
+					showOptions();
 				}
 				
 				resize();
