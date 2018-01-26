@@ -338,7 +338,7 @@ var FOREST_WIDGET_CREATOR =
 			
 			function resize() {
 				var diff = (widgetBody.offsetHeight - widgetBody.clientHeight) << 1,
-					neoSize = widgetBody.clientHeight - (optionsBody.offsetHeight + diff);
+					neoSize = widgetBody.clientHeight - (optionsBody.offsetHeight + diff + 2);
 				
 				forestContainer.style.height = neoSize + "px";
 				
