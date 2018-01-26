@@ -37,7 +37,7 @@ div.widget-body form.forest-container div.forest-body div.node input[type=checkb
 }
 
 div.widget-body form.forest-container {
-	margin-bottom: 1px;
+	margin-bottom: 2px;
 	border-radius: 5px;
 	border-style: solid;
 	border-width: 1px;
@@ -70,6 +70,7 @@ span.spanLabel {
 button.clear-button {
 	position: relative;
 	right: auto;
+	bottom: 1px;
 }
 
 .light-font {
